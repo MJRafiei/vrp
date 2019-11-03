@@ -3,6 +3,7 @@
 	<head>
 		<title>Qaaf</title>
 		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" />
 		<link href='style.css' rel='stylesheet' />
 		
 		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
@@ -13,6 +14,16 @@
 	<body>
 		<div ng-controller="Greeting">
 			<div id='map'></div>
+			
+			<div class="panel panel-primary col-sm-2">
+				<div class="panel-body">
+					<p>The ID is {{greeting.id}}</p>
+					<p>The content is {{greeting.content}}</p>
+					<input class="form-control" placeholder="driver count" ng-model="driverCount" />
+					<p><button class="btn btn-default" ng-click="plan()">Plan</button></p>
+				</div>
+			</div>
+			
 		</div>
 	</body>
 </html>
