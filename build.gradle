@@ -29,6 +29,9 @@ targetCompatibility = 1.8
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
 	
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	
 	implementation ':com.google.ortools'
 	compile 'com.google.protobuf:protobuf-java:3.10.0'
 	
