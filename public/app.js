@@ -1,17 +1,14 @@
 angular.module('qaaf', ['ui.bootstrap'])
 .controller('Greeting', function($scope, $http, $uibModal) {
     
-	$http.get('/greeting').
-    then(function(response) {
-        $scope.greeting = response.data;
-    });
-	
 	$scope.data = {
 		points: []
 	};
 	
 	$scope.plan = function() {
-		console.log($scope.data);
+		$http.post('/optimize', $scope.data).then(function(response) {
+			//TODO draw lines
+		});
 	}
 	
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpeWRnciIsImEiOiJjazJpcjZjMnExZXRpM3BvMjFqeGwzMWZvIn0.-dW4TEm1efXqzQfEYeu_Iw';
@@ -38,10 +35,10 @@ angular.module('qaaf', ['ui.bootstrap'])
 	     modalInstance.result.then(function (result) {
 	    	 
 	    	 var popup = new mapboxgl.Popup({className: 'popup'})
-	    	 	.setHTML("<div><span>takeCapacity:</span><span>" + result.data.takeCapacity + "</span></div>" + 
-	    	 			"<div><span>deliverCapacity:</span><span>" + result.data.deliverCapacity + "</span></div>" +
-	    	 			"<div><span>start:</span><span>" + result.data.start + "</span></div>" +
-	    	 			"<div><span>end:</span><span>" + result.data.end + "</span></div>");
+	    	 	.setHTML("<div><label>takeCapacity:</label><span>" + result.data.takeCapacity + "</span></div>" + 
+	    	 			"<div><label>deliverCapacity:</label><span>" + result.data.deliverCapacity + "</span></div>" +
+	    	 			"<div><label>start:</label><span>" + result.data.start + "</span></div>" +
+	    	 			"<div><label>end:</label><span>" + result.data.end + "</span></div>");
 	    	 
 	    	 var color = (result.depot) ? "#c2185b" : "#0097a7";
 	    	 var marker = new mapboxgl.Marker({color:color})
