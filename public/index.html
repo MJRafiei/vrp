@@ -7,7 +7,8 @@
 		<link href='style.css' rel='stylesheet' />
 		
 		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js"></script>
+		<script src="ui-bootstrap-tpls-2.5.0.min.js"></script>
     	<script src="app.js"></script>
 	</head>
 
@@ -19,8 +20,14 @@
 				<div class="panel-body">
 					<p>The ID is {{greeting.id}}</p>
 					<p>The content is {{greeting.content}}</p>
-					<input class="form-control" placeholder="driver count" ng-model="driverCount" />
-					<p><button class="btn btn-default" ng-click="plan()">Plan</button></p>
+					<form>
+						<input type="number" class="form-control form-group" placeholder="vehicle count" ng-model="data.vehicleCount" />
+						<input type="number" class="form-control form-group" placeholder="max distance" ng-model="data.maxDistance" />
+						<input type="number" class="form-control form-group" placeholder="max duration" ng-model="data.maxDuration" />
+						<input type="number" class="form-control form-group" placeholder="max take capacity" ng-model="data.maxTakeCapacity" />
+						<input type="number" class="form-control form-group" placeholder="max deliver capacity" ng-model="data.maxDeliverCapacity" />
+						<button class="btn btn-default" ng-click="plan()">Plan</button>
+					</form>
 				</div>
 			</div>
 			

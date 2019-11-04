@@ -1,0 +1,15 @@
+<div class="modal-body">
+	
+	<form>
+		<input type="number" class="form-control form-group" placeholder="take capacity" ng-model="data.takeCapacity" />
+		<input type="number" class="form-control form-group" placeholder="deliver capacity" ng-model="data.deliverCapacity" />
+		<input type="number" min="0" max="24" class="form-control form-group" placeholder="start time windows" ng-model="data.start" />
+		<input type="number" min="0" max="24" class="form-control" placeholder="end time windows" ng-model="data.end" />
+	</form>
+
+</div>
+<div class="modal-footer">
+	<input type="checkbox" ng-model="depot" /> depot
+	<button class="btn btn-default" ng-click="save()">save</button>
+	<button class="btn btn-default" ng-click="cancel()">cancel</button>
+</div>
