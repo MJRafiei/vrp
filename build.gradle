@@ -29,8 +29,8 @@ targetCompatibility = 1.8
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
 	
-	implementation 'com.google.ortools'
-	compile 'com.google.protobuf:protobuf-java:s3.10.0'
+	implementation ':com.google.ortools'
+	compile 'com.google.protobuf:protobuf-java:3.10.0'
 	
     testImplementation 'junit:junit:4.12'
 }
