@@ -12,6 +12,7 @@ public class Schedule {
 
 	public Schedule(int vehicleCount, int nodeCount, RoutingModel routing, RoutingIndexManager manager, Assignment solution) {
 		nodeMeetTimeWindow = new int[nodeCount][2];
+		vehicleTravel = new int[vehicleCount][];
 		RoutingDimension durationDimension = routing.getMutableDimension("Duration");
 		for (int i = 0; i < vehicleCount; i++) {
 			List<Integer> travel = new ArrayList<>();
@@ -23,6 +24,8 @@ public class Schedule {
 				nodeMeetTimeWindow[j][0] = (int) solution.min(durationVar);
 				nodeMeetTimeWindow[j][1] = (int) solution.max(durationVar);
 			}
+			
+			vehicleTravel[i] = travel.stream().mapToInt(k->k).toArray();;
 		}
 	}
 }
