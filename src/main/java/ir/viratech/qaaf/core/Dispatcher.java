@@ -1,8 +1,11 @@
 package ir.viratech.qaaf.core;
 
+import org.springframework.stereotype.Component;
+
 import com.google.ortools.constraintsolver.*;
 import ir.viratech.qaaf.model.Schedule;
 
+@Component
 public class Dispatcher {
 
 	public Schedule schedule(int vehicleCount, int depot,
