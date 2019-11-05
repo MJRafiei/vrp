@@ -2,16 +2,49 @@ angular.module('qaaf', ['ui.bootstrap'])
 .controller('Greeting', function($scope, $http, $uibModal) {
     
 	$scope.data = {
-		points: []
+		nodes: []
 	}
 	
 	$scope.config = {
 		deliverCapacity: true
 	}
 	
+	var colors = ['#d32f2f', '#c2185b', '#ffa000', '#7b1fa2', '#689f38'];
 	$scope.plan = function() {
+		
 		$http.post('/optimize', $scope.data).then(function(response) {
-			//TODO draw lines
+			var i = 0;
+			response.travels.forEach(function (travel) {
+				var coords = [];
+				travel.nodes.forEach(function (node) {
+					coords.push([node.coordinate.lng, node.coord.lat]);
+				});
+				
+				var geojson = {
+					type: "FeatureCollection",
+					features: [{
+						type: "Feature",
+						geometry: {
+							type: "LineString",
+							coordinates: coords
+						}
+					}]
+				};
+				
+				map.addLayer({
+					'id': i,
+					'type': 'line',
+					'source': {
+						'type': 'geojson',
+						'data': geojson
+					},
+					'paint': {
+						'line-color': colors[i++],
+						'line-width': 3,
+						'line-opacity': .8
+					}
+				});
+			});
 		});
 	}
 	
@@ -55,10 +88,10 @@ angular.module('qaaf', ['ui.bootstrap'])
 		    	 .setPopup(popup)
 		    	 .addTo(map);
 	    	 
-	    	 result.data.coord = marker.getLngLat();
-	    	 $scope.data.points.push(result.data);
+	    	 result.data.coordinate = marker.getLngLat();
+	    	 $scope.data.nodes.push(result.data);
 	    	 if(result.depot)
-	    		 $scope.data.depot = $scope.data.points.length - 1; 
+	    		 $scope.data.depot = $scope.data.nodes.length - 1; 
 	     });
 
     });
