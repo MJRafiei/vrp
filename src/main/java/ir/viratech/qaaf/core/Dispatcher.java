@@ -8,6 +8,10 @@ import ir.viratech.qaaf.model.Schedule;
 @Component
 public class Dispatcher {
 
+	static {
+	    System.loadLibrary("jniortools");
+	}
+	
 	public Schedule schedule(int vehicleCount, int depot,
 	                         int maxDistance, int maxDuration, int[][] distances, int[][] durations,
 	                         int[] capacities, int[][] demands, int[][] timeWindows) {
