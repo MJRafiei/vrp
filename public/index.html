@@ -22,11 +22,23 @@
 					<p>The content is {{greeting.content}}</p>
 					<form>
 						<input type="number" class="form-control form-group" placeholder="vehicle count" ng-model="data.vehicleCount" />
-						<input type="number" class="form-control form-group" placeholder="max distance" ng-model="data.maxDistance" />
-						<input type="number" class="form-control form-group" placeholder="max duration" ng-model="data.maxDuration" />
-						<input type="number" class="form-control form-group" placeholder="max take capacity" ng-model="data.maxTakeCapacity" />
-						<input type="number" class="form-control form-group" placeholder="max deliver capacity" ng-model="data.maxDeliverCapacity" />
+						<input type="number" class="form-control form-group" placeholder="max duration" ng-model="data.maxDuration" ng-show="config.duration" />
+						<input type="number" class="form-control form-group" placeholder="max distance" ng-model="data.maxDistance" ng-show="config.distance" />
+						<input type="number" class="form-control form-group" placeholder="max take capacity" ng-model="data.maxTakeCapacity" ng-show="config.takeCapacity" />
+						<input type="number" class="form-control form-group" placeholder="max deliver capacity" ng-model="data.maxDeliverCapacity" ng-show="config.deliverCapacity" />
 						<button class="btn btn-default" ng-click="plan()">Plan</button>
+					</form>
+				</div>
+			</div>
+			
+			<div class="panel panel-primary col-sm-2">
+				<div class="panel-body">
+					<form class="qaaf-form">
+						<div><input type="checkbox" class="form-group" ng-model="config.deliverCapacity" /><span>deliverCapacity</span></div>
+						<div><input type="checkbox" class="form-group" ng-model="config.takeCapacity" /><span>takeCapacity</span></div>
+						<div><input type="checkbox" class="form-group" ng-model="config.timeWindows" /><span>timeWindows</span></div>
+						<div><input type="checkbox" class="form-group" ng-model="config.distance" /><span>distance</span></div>
+						<div><input type="checkbox" class="form-group" ng-model="config.duration" /><span>duration</span></div>
 					</form>
 				</div>
 			</div>

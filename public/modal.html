@@ -1,10 +1,10 @@
 <div class="modal-body">
 	
 	<form>
-		<input type="number" class="form-control form-group" placeholder="take capacity" ng-model="data.takeCapacity" />
-		<input type="number" class="form-control form-group" placeholder="deliver capacity" ng-model="data.deliverCapacity" />
-		<input type="number" min="0" max="24" class="form-control form-group" placeholder="start time windows" ng-model="data.start" />
-		<input type="number" min="0" max="24" class="form-control" placeholder="end time windows" ng-model="data.end" />
+		<input type="number" class="form-control form-group" placeholder="take capacity" ng-model="data.takeCapacity" ng-show="config.takeCapacity" />
+		<input type="number" class="form-control form-group" placeholder="deliver capacity" ng-model="data.deliverCapacity" ng-show="config.deliverCapacity" />
+		<input type="number" min="0" max="24" class="form-control form-group" placeholder="start time windows" ng-model="data.start" ng-show="config.timeWindows" />
+		<input type="number" min="0" max="24" class="form-control" placeholder="end time windows" ng-model="data.end" ng-show="config.timeWindows" />
 	</form>
 
 </div>

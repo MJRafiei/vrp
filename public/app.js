@@ -3,7 +3,11 @@ angular.module('qaaf', ['ui.bootstrap'])
     
 	$scope.data = {
 		points: []
-	};
+	}
+	
+	$scope.config = {
+		deliverCapacity: true
+	}
 	
 	$scope.plan = function() {
 		$http.post('/optimize', $scope.data).then(function(response) {
@@ -29,7 +33,12 @@ angular.module('qaaf', ['ui.bootstrap'])
     	 var modalInstance = $uibModal.open({
              templateUrl: "modal.html",
              controller: "Modal",
-             size: "sm"
+             size: "sm",
+             resolve: {
+            	 config: function() {
+            		 return $scope.config;
+            	 }
+             }
          });
     	 
 	     modalInstance.result.then(function (result) {
@@ -54,9 +63,10 @@ angular.module('qaaf', ['ui.bootstrap'])
 
     });
     
-}).controller('Modal', function($scope, $uibModalInstance) {
+}).controller('Modal', function($scope, $uibModalInstance, config) {
 	
 	$scope.data = {};
+	$scope.config = config;
 	
 	$scope.save = function(){
 		$uibModalInstance.close({
