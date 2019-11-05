@@ -26,6 +26,7 @@ public class OptimizerController {
 		int[][] durations = new int[matrix.length][matrix.length];
 		int[][] demands = new int[2][matrix.length];
 		int[][] timeWindows = new int[matrix.length][2];
+		int[] capacities = new int[]{request.getMaxDeliverCapacity(), request.getMaxTakeCapacity()};
 
 		int minTimeWindow = request.getPoints().stream().mapToInt(OptimizationRequest.Point::getStart).min().getAsInt();
 		for (int i = 0; i < matrix.length; i++) {
@@ -41,13 +42,11 @@ public class OptimizerController {
 			timeWindows[i][1] = (request.getPoints().get(i).getEnd() - minTimeWindow) * 3600;
 		}
 
-		return dispatcher.schedule(request.getVehicleCount(), request.getDepot(), request.getMaxDistance(),
-				request.getMaxDuration(), distances, durations,
-				new int[]{request.getMaxDeliverCapacity(), request.getMaxTakeCapacity()},
-				demands, timeWindows);
-		
-		
+		return new Dispatcher(request.getVehicleCount(), request.getDepot(), durations, request.getMaxDuration())
+				.distances(distances, request.getMaxDistance())
+				.demands(demands, capacities)
+				.timeWindows(timeWindows)
+				.solve();
 	}
-	
 
 }
