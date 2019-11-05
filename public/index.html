@@ -4,12 +4,13 @@
 		<title>Qaaf</title>
 		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" />
-		<link href='style.css' rel='stylesheet' />
+		<link href='assets/style.css' rel='stylesheet' />
 		
 		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js"></script>
-		<script src="ui-bootstrap-tpls-2.5.0.min.js"></script>
+		<script src="libs/ui-bootstrap-tpls-2.5.0.min.js"></script>
     	<script src="app.js"></script>
+    	<script src="modals/controller.js"></script>
 	</head>
 
 	<body>
@@ -18,8 +19,6 @@
 			
 			<div class="panel panel-primary col-sm-2">
 				<div class="panel-body">
-					<p>The ID is {{greeting.id}}</p>
-					<p>The content is {{greeting.content}}</p>
 					<form>
 						<input type="number" class="form-control form-group" placeholder="vehicle count" ng-model="data.vehicleCount" />
 						<input type="number" class="form-control form-group" placeholder="max duration" ng-model="data.maxDuration" ng-show="config.duration" />
@@ -31,17 +30,8 @@
 				</div>
 			</div>
 			
-			<div class="panel panel-primary col-sm-2">
-				<div class="panel-body">
-					<form class="qaaf-form">
-						<div><input type="checkbox" class="form-group" ng-model="config.deliverCapacity" /><span>deliverCapacity</span></div>
-						<div><input type="checkbox" class="form-group" ng-model="config.takeCapacity" /><span>takeCapacity</span></div>
-						<div><input type="checkbox" class="form-group" ng-model="config.timeWindows" /><span>timeWindows</span></div>
-						<div><input type="checkbox" class="form-group" ng-model="config.distance" /><span>distance</span></div>
-						<div><input type="checkbox" class="form-group" ng-model="config.duration" /><span>duration</span></div>
-					</form>
-				</div>
-			</div>
+			<button id="setting-button" class="btn btn-default btn-lg" ng-click="setting()"><i class="glyphicon glyphicon-cog"></i></button>
+<!-- 			<button id="depot-button" class="btn btn-default btn-lg" ng-click="depot()"><i class="glyphicon glyphicon-home"></i></button> -->
 			
 		</div>
 	</body>

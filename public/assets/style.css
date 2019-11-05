@@ -18,3 +18,15 @@ body {
 .qaaf-form div span {
 	padding-left: 10px;
 }
+
+#setting-button {
+	position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#depot-button {
+	position: absolute;
+    right: 10px;
+    top: 60px;
+}
