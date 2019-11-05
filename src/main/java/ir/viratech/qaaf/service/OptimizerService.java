@@ -9,26 +9,26 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
 import ir.viratech.qaaf.domain.ETAResponse;
-import ir.viratech.qaaf.domain.OptimizationRequest.Point;
+import ir.viratech.qaaf.domain.Node;
 
 @Service
 public class OptimizerService {
 
-	public ETAResponse[][] createMatrix(List<Point> points) {
+	public ETAResponse[][] createMatrix(List<Node> nodes) {
 		
 		RestTemplate template = new RestTemplate();
 		String baseUrl = "http://213.232.124.172:8080/GIS/api/eta/route?";
-		ETAResponse[][] result = new ETAResponse[points.size()][points.size()];
+		ETAResponse[][] result = new ETAResponse[nodes.size()][nodes.size()];
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[i].length; j++) {
 				if (i == j)
 					continue;
 				
-				Point pi = points.get(i);
-				Point pj = points.get(j);
-				String url = baseUrl + "src_lat=" + pi.getCoord().getLat() + "&src_lon=" + pi.getCoord().getLng()
-						+ "&dst_lat=" + pj.getCoord().getLat() + "&dst_lon=" + pj.getCoord().getLng();
+				Node pi = nodes.get(i);
+				Node pj = nodes.get(j);
+				String url = baseUrl + "src_lat=" + pi.getCoordinate().getLat() + "&src_lon=" + pi.getCoordinate().getLng()
+						+ "&dst_lat=" + pj.getCoordinate().getLat() + "&dst_lon=" + pj.getCoordinate().getLng();
 				
 				try {
 					ETAResponse response = template.getForObject(url, ETAResponse.class);

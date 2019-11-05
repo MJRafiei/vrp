@@ -9,30 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OptimizationRequest {
 
-	List<Point> points;
-	int depot;
-    int maxDeliverCapacity;
-    int maxTakeCapacity;
-    int maxDistance;
-    int maxDuration;
-    int vehicleCount;
-	
-	@Data
-	@NoArgsConstructor
-	public static class Point {
-		
-		Coordinate coord;
-		int deliverCapacity;
-		int takeCapacity;
-		int start;
-        int end;
-		
-		@Data
-		@NoArgsConstructor
-		public static class Coordinate {
-			double lng;
-			double lat;
-		}
-	}
-	
+	private List<Node> nodes;
+	private int depot;
+    private int maxDeliverCapacity;
+    private int maxTakeCapacity;
+    private int maxDistance;
+    private int maxDuration;
+    private int vehicleCount;
+
 }
