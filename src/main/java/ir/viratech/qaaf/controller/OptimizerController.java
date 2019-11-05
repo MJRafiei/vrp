@@ -38,7 +38,7 @@ public class OptimizerController {
 			demands[0][i] = request.getPoints().get(i).getDeliverCapacity();
 			demands[1][i] = request.getPoints().get(i).getTakeCapacity();
 			timeWindows[i][0] = (request.getPoints().get(i).getStart() - minTimeWindow) * 3600;
-			timeWindows[i][0] = (request.getPoints().get(i).getEnd() - minTimeWindow) * 3600;
+			timeWindows[i][1] = (request.getPoints().get(i).getEnd() - minTimeWindow) * 3600;
 		}
 
 		return dispatcher.schedule(request.getVehicleCount(), request.getDepot(), request.getMaxDistance(),

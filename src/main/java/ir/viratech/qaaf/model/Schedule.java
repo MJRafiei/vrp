@@ -1,10 +1,12 @@
 package ir.viratech.qaaf.model;
 
 import com.google.ortools.constraintsolver.*;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class Schedule {
 
 	public int[][] nodeMeetTimeWindow;
@@ -23,6 +25,7 @@ public class Schedule {
 				IntVar durationVar = durationDimension.cumulVar(index);
 				nodeMeetTimeWindow[j][0] = (int) solution.min(durationVar);
 				nodeMeetTimeWindow[j][1] = (int) solution.max(durationVar);
+				index = solution.value(routing.nextVar(index));
 			}
 			
 			vehicleTravel[i] = travel.stream().mapToInt(k->k).toArray();;
