@@ -4,6 +4,7 @@ import ir.viratech.qaaf.domain.Node;
 import ir.viratech.qaaf.domain.OptimizationResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ir.viratech.qaaf.core.Dispatcher;
@@ -20,7 +21,9 @@ public class OptimizerController {
 	private final OptimizerService service;
 
 	@PostMapping("/optimize")
-	public OptimizationResponse optimize(@RequestBody OptimizationRequest request) {
+	public OptimizationResponse optimize(@RequestBody OptimizationRequest request,
+			@RequestParam("dist") boolean dist, @RequestParam(name="tcap", required=false) boolean tcap,
+			@RequestParam("time") boolean time, @RequestParam(name="dcap", required=false) boolean dcap) {
 
 		ETAResponse[][] matrix = service.createMatrix(request.getNodes());
 		int[][] distances = new int[matrix.length][matrix.length];
@@ -43,12 +46,14 @@ public class OptimizerController {
 			timeWindows[i][1] = (request.getNodes().get(i).getEnd() - minTimeWindow) * 3600;
 		}
 
-		Schedule schedule = new Dispatcher(request.getVehicleCount(), request.getDepot(), durations, request.getMaxDuration())
-				.distances(distances, request.getMaxDistance())
-				.demands(demands, capacities)
-				.timeWindows(timeWindows)
-				.solve();
+		if(request.getMaxDuration() == 0)
+			request.setMaxDuration(24*3600);
+		Dispatcher dispatcher = new Dispatcher(request.getVehicleCount(), request.getDepot(), durations, request.getMaxDuration());
+		dispatcher = dispatcher.demands(demands, capacities);
+		dispatcher = (dist) ? dispatcher.distances(distances, request.getMaxDistance()) : dispatcher;
+		dispatcher = (time) ? dispatcher.timeWindows(timeWindows) : dispatcher;
 
+		Schedule schedule = dispatcher.solve();
 		return new OptimizationResponse(schedule, request);
 	}
 

@@ -6,18 +6,22 @@ angular.module('qaaf', ['ui.bootstrap'])
 	}
 	
 	$scope.config = {
-		deliverCapacity: true
+		deliverCapacity: true,
+		takeCapacity: false,
+		duration: false,
+		distance: false,
+		timeWindows: false
 	}
 	
-	var colors = ['#d32f2f', '#c2185b', '#ffa000', '#7b1fa2', '#689f38'];
+	var colors = ['#ffa000', '#7b1fa2', '#689f38', '#c2185b', '#d32f2f'];
 	$scope.plan = function() {
 		
-		$http.post('/optimize', $scope.data).then(function(response) {
+		$http.post('/optimize?dist=' + $scope.config.distance + "&time=" + $scope.config.timeWindows, $scope.data).then(function(response) {
 			var i = 0;
-			response.travels.forEach(function (travel) {
+			response.data.travels.forEach(function (travel) {
 				var coords = [];
 				travel.nodes.forEach(function (node) {
-					coords.push([node.coordinate.lng, node.coord.lat]);
+					coords.push([node.coordinate.lng, node.coordinate.lat]);
 				});
 				
 				var geojson = {
@@ -32,7 +36,7 @@ angular.module('qaaf', ['ui.bootstrap'])
 				};
 				
 				map.addLayer({
-					'id': i,
+					'id': 'id' + i,
 					'type': 'line',
 					'source': {
 						'type': 'geojson',
