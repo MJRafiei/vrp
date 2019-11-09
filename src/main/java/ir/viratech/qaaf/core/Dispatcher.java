@@ -2,6 +2,7 @@ package ir.viratech.qaaf.core;
 
 import com.google.ortools.constraintsolver.*;
 import ir.viratech.qaaf.model.Schedule;
+import ir.viratech.qaaf.model.TimeWindow;
 
 public class Dispatcher {
 
@@ -12,7 +13,6 @@ public class Dispatcher {
 	private final int vehicleCount;
 	private final int depot;
 	private final int maxDuration;
-	private final int[][] durations;
 	private final int durationCallbackIndex;
 
 	private RoutingIndexManager manager;
@@ -22,7 +22,6 @@ public class Dispatcher {
 		this.vehicleCount = vehicleCount;
 		this.depot = depot;
 		this.maxDuration = maxDuration;
-		this.durations = durations;
 
 		manager = new RoutingIndexManager(durations.length, vehicleCount, depot);
 		routing = new RoutingModel(manager);
@@ -43,15 +42,15 @@ public class Dispatcher {
 		return this;
 	}
 
-	public Dispatcher timeWindows(int[][] timeWindows) {
+	public Dispatcher timeWindows(TimeWindow[] timeWindows) {
 		routing.addDimension(durationCallbackIndex, maxDuration, maxDuration, false, "Duration");
 		RoutingDimension durationDimension = routing.getMutableDimension("Duration");
 		for (int i = 0; i < timeWindows.length; i++)
 			if (i != depot)
-				durationDimension.cumulVar(manager.nodeToIndex(i)).setRange(timeWindows[i][0], timeWindows[i][1]);
+				durationDimension.cumulVar(manager.nodeToIndex(i)).setRange(timeWindows[i].getStart(), timeWindows[i].getEnd());
 		for (int i = 0; i < vehicleCount; i++) {
 			long startIndex = routing.start(i), endIndex = routing.end(i);
-			durationDimension.cumulVar(startIndex).setRange(timeWindows[depot][0], timeWindows[depot][1]);
+			durationDimension.cumulVar(startIndex).setRange(timeWindows[depot].getStart(), timeWindows[depot].getEnd());
 			routing.addVariableMinimizedByFinalizer(durationDimension.cumulVar(startIndex));
 			routing.addVariableMinimizedByFinalizer(durationDimension.cumulVar(endIndex));
 		}
@@ -77,7 +76,7 @@ public class Dispatcher {
 		if (durationDimension == null)
 			routing.addDimension(durationCallbackIndex, 0, maxDuration, true, "Duration");
 		Assignment solution = routing.solve();
-		return new Schedule(vehicleCount, durations.length, routing, manager, solution);
+		return new Schedule(vehicleCount, routing, manager, solution);
 	}
 
 }

@@ -10,10 +10,10 @@ public class Node {
 	private Coordinate coordinate;
 	private int deliverCapacity;
 	private int takeCapacity;
-	private int start;
-	private int end;
+	private long start;
+	private long end;
 
-	public Node(Coordinate coordinate, int start, int end) {
+	public Node(Coordinate coordinate, long start, long end) {
 		this.coordinate = coordinate;
 		this.start = start;
 		this.end = end;

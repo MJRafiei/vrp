@@ -9,26 +9,33 @@ import java.util.List;
 @Data
 public class Schedule {
 
-	public int[][] nodeMeetTimeWindow;
-	public int[][] vehicleTravel;
 
-	public Schedule(int vehicleCount, int nodeCount, RoutingModel routing, RoutingIndexManager manager, Assignment solution) {
-		nodeMeetTimeWindow = new int[nodeCount][2];
-		vehicleTravel = new int[vehicleCount][];
+	// [i][j]: i'th vehicles j'th destination
+	private int[][] vehicleDestinations;
+
+	// [i][j]: i'th vehicle j'th timeWindow
+	private TimeWindow[][] vehicleTimeWindows;
+
+	public Schedule(int vehicleCount, RoutingModel routing, RoutingIndexManager manager, Assignment solution) {
+		vehicleDestinations = new int[vehicleCount][];
+		vehicleTimeWindows = new TimeWindow[vehicleCount][];
 		RoutingDimension durationDimension = routing.getMutableDimension("Duration");
 		for (int i = 0; i < vehicleCount; i++) {
-			List<Integer> travel = new ArrayList<>();
+			List<Integer> destinations = new ArrayList<>();
+			List<TimeWindow> timeWindows = new ArrayList<>();
 			long index = routing.start(i);
-			while (!routing.isEnd(index)) {
+			while (true) {
 				int j = manager.indexToNode(index);
-				travel.add(j);
+				destinations.add(j);
 				IntVar durationVar = durationDimension.cumulVar(index);
-				nodeMeetTimeWindow[j][0] = (int) solution.min(durationVar);
-				nodeMeetTimeWindow[j][1] = (int) solution.max(durationVar);
+				timeWindows.add(new TimeWindow(solution.min(durationVar), solution.max(durationVar)));
+				if (routing.isEnd(index))
+					break;
 				index = solution.value(routing.nextVar(index));
 			}
 			
-			vehicleTravel[i] = travel.stream().mapToInt(k->k).toArray();;
+			vehicleDestinations[i] = destinations.stream().mapToInt(k->k).toArray();;
+			vehicleTimeWindows[i] = timeWindows.toArray(new TimeWindow[0]);
 		}
 	}
 }

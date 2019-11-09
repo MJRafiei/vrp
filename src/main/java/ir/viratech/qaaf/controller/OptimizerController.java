@@ -2,6 +2,7 @@ package ir.viratech.qaaf.controller;
 
 import ir.viratech.qaaf.domain.Node;
 import ir.viratech.qaaf.domain.OptimizationResponse;
+import ir.viratech.qaaf.model.TimeWindow;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,10 +30,10 @@ public class OptimizerController {
 		int[][] distances = new int[matrix.length][matrix.length];
 		int[][] durations = new int[matrix.length][matrix.length];
 		int[][] demands = new int[2][matrix.length];
-		int[][] timeWindows = new int[matrix.length][2];
+		TimeWindow[] timeWindows = new TimeWindow[matrix.length];
 		int[] capacities = new int[]{request.getMaxDeliverCapacity(), request.getMaxTakeCapacity()};
 
-		int minTimeWindow = request.getNodes().stream().mapToInt(Node::getStart).min().getAsInt();
+		long minStart = request.getNodes().stream().mapToLong(Node::getStart).min().getAsLong();
 		for (int i = 0; i < matrix.length; i++) {
 			for (int j = 0; j < matrix.length; j++) {
 				if (i == j)
@@ -42,8 +43,8 @@ public class OptimizerController {
 			}
 			demands[0][i] = request.getNodes().get(i).getDeliverCapacity();
 			demands[1][i] = request.getNodes().get(i).getTakeCapacity();
-			timeWindows[i][0] = (request.getNodes().get(i).getStart() - minTimeWindow) * 3600;
-			timeWindows[i][1] = (request.getNodes().get(i).getEnd() - minTimeWindow) * 3600;
+			timeWindows[i] = new TimeWindow((request.getNodes().get(i).getStart() - minStart) * 3600,
+					(request.getNodes().get(i).getEnd() - minStart) * 3600);
 		}
 
 		if(request.getMaxDuration() == 0)
@@ -54,7 +55,7 @@ public class OptimizerController {
 		dispatcher = (time) ? dispatcher.timeWindows(timeWindows) : dispatcher;
 
 		Schedule schedule = dispatcher.solve();
-		return new OptimizationResponse(schedule, request);
+		return new OptimizationResponse(schedule, request, matrix);
 	}
 
 }

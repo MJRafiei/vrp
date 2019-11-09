@@ -10,24 +10,22 @@ public class OptimizationResponse {
 
 	private Travel[] travels;
 
-	public OptimizationResponse(Schedule schedule, OptimizationRequest request) {
-		travels = new Travel[schedule.vehicleTravel.length];
+	public OptimizationResponse(Schedule schedule, OptimizationRequest request, ETAResponse[][] matrix) {
+		travels = new Travel[schedule.getVehicleDestinations().length];
 
 		for (int i = 0; i < travels.length; i++) {
-			int travelSize = schedule.vehicleTravel[i].length;
-			travels[i] = new Travel(travelSize);
-			for (int j = 0; j < travelSize; j++) {
-				int idx = schedule.vehicleTravel[i][j];
-				travels[i].nodes[j] = new Node(request.getNodes().get(idx).getCoordinate(),
-						schedule.getNodeMeetTimeWindow()[idx][0],
-						schedule.getNodeMeetTimeWindow()[idx][1]);
+			int transitionSize = schedule.getVehicleDestinations()[i].length - 1;
+			travels[i] = new Travel(transitionSize);
+			for (int j = 0; j < transitionSize; j++) {
+				int st = schedule.getVehicleDestinations()[i][j], en = schedule.getVehicleDestinations()[i][j + 1];
+				travels[i].transitions[j] = matrix[st][en];
+				travels[i].nodes[j] = new Node(request.getNodes().get(st).getCoordinate(),
+						schedule.getVehicleTimeWindows()[i][j].getStart(),
+						schedule.getVehicleTimeWindows()[i][j].getEnd());
 			}
-			travels[i].nodes[travelSize] = new Node(request.getNodes().get(request.getDepot()).getCoordinate(),
-					0, 0);
-			//FIXME: time window for going back to depot
-			//FIXME: convert time window values of schedule to good format for response
-
-
+			travels[i].nodes[transitionSize] = new Node(request.getNodes().get(request.getDepot()).getCoordinate(),
+					schedule.getVehicleTimeWindows()[i][transitionSize].getStart(),
+					schedule.getVehicleTimeWindows()[i][transitionSize].getEnd());
 		}
 
 	}
@@ -35,17 +33,12 @@ public class OptimizationResponse {
 	@Data
 	@NoArgsConstructor
 	public static class Travel {
-		private String[] geometries;
+		private ETAResponse[] transitions;
 		private Node[] nodes;
 
-		Travel(int travelSize) {
-			geometries = new String[travelSize];
-			nodes = new Node[travelSize + 1];
-		}
-
-		public Travel(String[] geometries, Node[] nodes) {
-			this.geometries = geometries;
-			this.nodes = nodes;
+		Travel(int transitionSize) {
+			transitions = new ETAResponse[transitionSize];
+			nodes = new Node[transitionSize + 1];
 		}
 	}
 }
