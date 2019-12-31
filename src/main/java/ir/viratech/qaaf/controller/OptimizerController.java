@@ -30,6 +30,7 @@ public class OptimizerController {
 		int[][] distances = new int[matrix.length][matrix.length];
 		int[][] durations = new int[matrix.length][matrix.length];
 		int[][] demands = new int[2][matrix.length];
+		int[] loyalties = new int[matrix.length];
 		TimeWindow[] timeWindows = new TimeWindow[matrix.length];
 		int[] capacities = new int[]{request.getMaxDeliverCapacity(), request.getMaxTakeCapacity()};
 
@@ -38,11 +39,13 @@ public class OptimizerController {
 			for (int j = 0; j < matrix.length; j++) {
 				if (i == j)
 					continue;
+				// System.out.println(i + ", " + j);
 				distances[i][j] = matrix[i][j].getDistance();
 				durations[i][j] = matrix[i][j].getDuration();
 			}
 			demands[0][i] = request.getNodes().get(i).getDeliverCapacity();
 			demands[1][i] = request.getNodes().get(i).getTakeCapacity();
+			loyalties[i] = request.getNodes().get(i).getLoyalty();
 			timeWindows[i] = new TimeWindow((request.getNodes().get(i).getStart() - minStart) * 3600,
 					(request.getNodes().get(i).getEnd() - minStart) * 3600);
 		}

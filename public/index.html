@@ -1,38 +1,74 @@
 <!doctype html>
 <html ng-app="qaaf">
-	<head>
-		<title>Qaaf</title>
-		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" />
-		<link href='assets/style.css' rel='stylesheet' />
-		
-		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js"></script>
-		<script src="libs/ui-bootstrap-tpls-2.5.0.min.js"></script>
-    	<script src="app.js"></script>
-    	<script src="modals/controller.js"></script>
-	</head>
 
-	<body>
-		<div ng-controller="Greeting">
-			<div id='map'></div>
-			
-			<div class="panel panel-primary col-sm-2">
-				<div class="panel-body">
-					<form>
-						<input type="number" class="form-control form-group" placeholder="vehicle count" ng-model="data.vehicleCount" />
-						<input type="number" class="form-control form-group" placeholder="max duration" ng-model="data.maxDuration" ng-show="config.duration" />
-						<input type="number" class="form-control form-group" placeholder="max distance" ng-model="data.maxDistance" ng-show="config.distance" />
-						<input type="number" class="form-control form-group" placeholder="max take capacity" ng-model="data.maxTakeCapacity" ng-show="config.takeCapacity" />
-						<input type="number" class="form-control form-group" placeholder="max deliver capacity" ng-model="data.maxDeliverCapacity" ng-show="config.deliverCapacity" />
-						<button class="btn btn-default" ng-click="plan()">Plan</button>
-					</form>
-				</div>
-			</div>
-			
-			<button id="setting-button" class="btn btn-default btn-lg" ng-click="setting()"><i class="glyphicon glyphicon-cog"></i></button>
-<!-- 			<button id="depot-button" class="btn btn-default btn-lg" ng-click="depot()"><i class="glyphicon glyphicon-home"></i></button> -->
-			
-		</div>
-	</body>
+<head>
+    <title>Qaaf</title>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href='assets/style.css' rel='stylesheet' />
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.js"></script>
+    <script src="libs/ui-bootstrap-tpls-2.5.0.min.js"></script>
+    <script src="libs/papaparse.min.js"></script>
+    <script src="libs/polyline.js"></script>
+    <script src="app.js"></script>
+    <script src="modals/controller.js"></script>
+</head>
+
+<body>
+    <div ng-controller="Greeting">
+        <div id='map'></div>
+
+        <div class="panel panel-default col-sm-2">
+            <div class="panel-heading">Fleet</div>
+            <div class="panel-body">
+                <form>
+                    <input type="number" class="form-control form-group" placeholder="vehicle count" ng-model="data.vehicleCount" />
+                    <input type="number" class="form-control form-group" placeholder="max duration" ng-model="data.maxDuration" ng-show="config.duration" />
+                    <input type="number" class="form-control form-group" placeholder="max distance" ng-model="data.maxDistance" ng-show="config.distance" />
+                    <input type="number" class="form-control form-group" placeholder="max take capacity" ng-model="data.maxTakeCapacity" ng-show="config.takeCapacity" />
+                    <input type="number" class="form-control form-group" placeholder="max deliver capacity" ng-model="data.maxDeliverCapacity" ng-show="config.deliverCapacity" />
+                    <button class="btn btn-default" ng-click="plan()">Plan</button>
+                    <button class="btn btn-default" ng-show="data.plan.length" ng-click="report()">Report</button>
+                </form>
+            </div>
+        </div>
+
+        <button id="setting-button" class="btn btn-default btn-lg" ng-click="setting()"><i
+				class="glyphicon glyphicon-cog"></i></button>
+        <!-- 			<button id="depot-button" class="btn btn-default btn-lg" ng-click="depot()"><i class="glyphicon glyphicon-home"></i></button> -->
+
+
+        <div class="panel panel-default col-sm-4 clearboth">
+            <div class="panel-heading">Points</div>
+            <div class="panel-body">
+                <form class="form-inline">
+                    <input type="file" id="input">
+                    <button class="btn btn-success" ng-click="submitData()">Submit</button>
+                </form>
+                <div class="scrollable-panel">
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center">#</th>
+                                <th scope="col" class="text-center" ng-repeat="(k, v) in config"><strong ng-if="v">{{k}}</strong></th>
+                                <!-- <td>Deliver Capacity</td> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="x in data.nodes">
+                                <td scope="col">{{$index}}</td>
+                                <td ng-repeat="(k, v) in config"><strong ng-if="v">{{x[k]}}</strong></td>
+                                <!-- <td>{{ x.Country }}</td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
 </html>

@@ -7,7 +7,7 @@ import ir.viratech.qaaf.model.TimeWindow;
 public class Dispatcher {
 
 	static {
-	    System.loadLibrary("jniortools");
+		System.loadLibrary("jniortools");
 	}
 
 	private final int vehicleCount;
@@ -37,8 +37,8 @@ public class Dispatcher {
 
 	public Dispatcher demands(int[][] demands, int[] capacities) {
 		for (int i = 0; i < capacities.length; i++)
-			routing.addDimension(callbackIndex(routing, manager, demands[i]), 0, capacities[i],
-					true, "Capacity (" + i + ")");
+			routing.addDimension(callbackIndex(routing, manager, demands[i]), 0, capacities[i], true,
+					"Capacity (" + i + ")");
 		return this;
 	}
 
@@ -47,7 +47,8 @@ public class Dispatcher {
 		RoutingDimension durationDimension = routing.getMutableDimension("Duration");
 		for (int i = 0; i < timeWindows.length; i++)
 			if (i != depot)
-				durationDimension.cumulVar(manager.nodeToIndex(i)).setRange(timeWindows[i].getStart(), timeWindows[i].getEnd());
+				durationDimension.cumulVar(manager.nodeToIndex(i)).setRange(timeWindows[i].getStart(),
+						timeWindows[i].getEnd());
 		for (int i = 0; i < vehicleCount; i++) {
 			long startIndex = routing.start(i), endIndex = routing.end(i);
 			durationDimension.cumulVar(startIndex).setRange(timeWindows[depot].getStart(), timeWindows[depot].getEnd());
@@ -58,17 +59,21 @@ public class Dispatcher {
 		return this;
 	}
 
+
 	private int callbackIndex(RoutingModel routing, RoutingIndexManager manager, int[][] matrix) {
 		return routing.registerTransitCallback((long fromIndex, long toIndex) -> {
 			int fromNode = manager.indexToNode(fromIndex);
 			int toNode = manager.indexToNode(toIndex);
+			System.out.println(fromIndex + ", " + toIndex);
 			return matrix[fromNode][toNode];
 		});
 	}
 
 	private int callbackIndex(RoutingModel routing, RoutingIndexManager manager, int[] array) {
-		return routing.registerUnaryTransitCallback(
-				(long index) -> array[manager.indexToNode(index)]);
+		return routing.registerUnaryTransitCallback((long index) -> {
+			System.out.println(index);			
+			return array[manager.indexToNode(index)];
+		});
 	}
 
 	public Schedule solve() {

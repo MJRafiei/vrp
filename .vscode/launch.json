@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - StringBasedCacheMapBasedETAResponseCache",
+            "request": "launch",
+            "mainClass": "ir.viratech.qaaf.domain.StringBasedCacheMapBasedETAResponseCache",
+            "projectName": "qaaf-service"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - DenseRegionLocator",
+            "request": "launch",
+            "mainClass": "ir.viratech.qaaf.thesis.DenseRegionLocator",
+            "projectName": "qaaf-service"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - QaafApplication",
+            "request": "launch",
+            "mainClass": "ir.viratech.qaaf.QaafApplication",
+            "projectName": "qaaf-service"
+        }
+    ]
+}

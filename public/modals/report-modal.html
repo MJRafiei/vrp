@@ -1,0 +1,28 @@
+<div class="scrollable-panel">
+    <table class="table text-center" ng-repeat="travel in data">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center"><strong>#</strong></th>
+                <th scope="col" class="text-center"><strong>From</strong></th>
+                <th scope="col" class="text-center"><strong>To</strong></th>
+                <th scope="col" class="text-center"><strong>Loyalty</strong></th>
+                <th scope="col" class="text-center"><strong>Duration</strong></th>
+                <th scope="col" class="text-center"><strong>Distance</strong></th>
+                <th scope="col" class="text-center"><strong>Waiting</strong></th>
+                <th scope="col" class="text-center"><strong>Weighted Duration</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="step in travel.steps">
+                <td scope="col">{{$index}}</td>
+                <td>{{ step.from.coordinate.lng }} , {{step.from.coordinate.lat}}</td>
+                <td>{{ step.to.coordinate.lng }} , {{step.to.coordinate.lat}}</td>
+                <td>{{ step.loyalty }}</td>
+                <td>{{ step.duration }}</td>
+                <td>{{ step.cumulDistance }}</td>
+                <td>{{ step.cumulDuration }}</td>
+                <td>{{ step.weightedDuration }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

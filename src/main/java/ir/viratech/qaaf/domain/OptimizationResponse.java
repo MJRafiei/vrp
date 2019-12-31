@@ -22,6 +22,7 @@ public class OptimizationResponse {
 				travels[i].nodes[j] = new Node(request.getNodes().get(st).getCoordinate(),
 						schedule.getVehicleTimeWindows()[i][j].getStart(),
 						schedule.getVehicleTimeWindows()[i][j].getEnd());
+				travels[i].nodes[j].setLoyalty(request.getNodes().get(st).getLoyalty());
 			}
 			travels[i].nodes[transitionSize] = new Node(request.getNodes().get(request.getDepot()).getCoordinate(),
 					schedule.getVehicleTimeWindows()[i][transitionSize].getStart(),
