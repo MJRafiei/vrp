@@ -21,3 +21,6 @@ gen/
 .gradle/
 build/
 bin/
+
+#Thesis-specific files
+thesis-data/
